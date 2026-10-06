@@ -15,6 +15,7 @@ export const profileAbi = parseAbi([
   "function BADGE_ID() view returns (uint256)",
   "function MAX_BADGES() view returns (uint256)",
   "function badgesMinted() view returns (uint256)",
+  "function earlySupporters(uint256) view returns (address)",
   "function hasClaimed(address) view returns (bool)",
   "function pendingRevenue() view returns (uint256)",
   "function withdrawableRevenue(address) view returns (uint256)",

@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light; }
+:root { color-scheme: light; --fi-ink: #141210; --fi-paper: #F7F2E7; --fi-gold: #C8962F; --fi-teal: #1E5B52; }
 * { box-sizing: border-box; }
-body { margin: 0; background: #f6f4ee; color: #10110f; }
+body { margin: 0; background: var(--fi-paper); color: var(--fi-ink); font-family: Inter, "Avenir Next", Arial, sans-serif; }
 button, input, textarea { font: inherit; }
-::selection { background: #d9ff57; color: #10110f; }
-.grid-paper { background-image: linear-gradient(rgba(16,17,15,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(16,17,15,.035) 1px, transparent 1px); background-size: 38px 38px; }
-.focus-ring:focus-visible { outline: 3px solid #9dbd20; outline-offset: 3px; }
+::selection { background: #E6D0A1; color: var(--fi-ink); }
+.grid-paper { background-color: var(--fi-paper); }
+.focus-ring:focus-visible { outline: 3px solid var(--fi-gold); outline-offset: 3px; }

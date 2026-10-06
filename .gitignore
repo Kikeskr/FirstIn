@@ -3,6 +3,7 @@ node_modules/
 artifacts/
 cache/
 coverage/
+brand/package-build/
 .env
 .env.*
 !.env.example

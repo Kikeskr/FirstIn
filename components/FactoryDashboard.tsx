@@ -6,6 +6,7 @@ import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteCont
 import { isAddress } from "viem";
 import { FACTORY_ADDRESS, factoryAbi } from "@/lib/contracts";
 import { SiteHeader } from "@/components/SiteHeader";
+import { BrandMark } from "@/components/BrandMark";
 
 type Metadata = { name: string; description: string; image: string };
 
@@ -102,39 +103,52 @@ export function FactoryDashboard() {
   return (
     <main className="min-h-screen grid-paper">
       <SiteHeader />
-      <section className="mx-auto grid w-full max-w-7xl gap-12 px-5 pb-20 pt-8 sm:px-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-16 lg:pt-16">
+      <section className="mx-auto grid min-h-[590px] w-full max-w-7xl gap-12 px-5 pb-16 pt-14 sm:px-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:gap-16 lg:pt-10">
         <div>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-2 text-xs font-bold uppercase tracking-[.16em]">
-            <span className="h-2 w-2 rounded-full bg-[#9dbd20]" /> Proof of discovery · Monad
-          </div>
-          <h1 className="max-w-3xl text-5xl font-black leading-[.98] tracking-[-.055em] sm:text-7xl">
-            Be here<br /><span className="text-[#6c8119]">before it</span><br />matters.
+          <p className="mb-10 font-mono text-xs uppercase tracking-[.19em] text-teal">Proof of discovery · on Monad</p>
+          <h1 className="max-w-3xl font-serif text-6xl font-normal leading-[.98] tracking-[-.045em] sm:text-7xl lg:text-[5.25rem]">
+            Discovery,<br />made visible.
           </h1>
-          <p className="mt-7 max-w-xl text-lg leading-8 text-[#53554e]">
-            The first 100 supporters get a permanent place in a creator’s story—and share 20% of the tips that follow.
+          <p className="mt-7 max-w-xl text-lg leading-8 text-[#4C473F]">
+            Launch a creator profile. Recognize the first 100 who believed.
           </p>
-          <div className="mt-9 flex flex-wrap gap-3 text-sm font-semibold">
-            <span className="rounded-full bg-acid px-4 py-2">80% to creator</span>
-            <span className="rounded-full border border-black/15 bg-paper px-4 py-2">20% to early supporters</span>
-            <span className="rounded-full border border-black/15 bg-paper px-4 py-2">100 badges max</span>
-          </div>
-          <div className="mt-12 border-t border-black/15 pt-5">
-            <p className="text-xs font-bold uppercase tracking-[.16em] text-muted">Already have a creator profile?</p>
-            <div className="mt-3 flex max-w-xl gap-2">
-              <input className="focus-ring min-w-0 flex-1 rounded-xl border border-black/15 bg-white px-4 py-3 text-sm" value={lookup} onChange={(event) => setLookup(event.target.value)} placeholder="Paste a profile address" aria-label="Profile address" />
-              <button onClick={openLookup} className="focus-ring rounded-xl bg-ink px-5 py-3 text-sm font-bold text-white hover:bg-[#34362f]">Open</button>
-            </div>
-            {lookupError && <p className="mt-2 text-sm text-red-700">{lookupError}</p>}
+          <div className="mt-10 flex flex-wrap gap-4">
+            <a href="#creator-studio" className="focus-ring inline-flex min-h-14 items-center justify-center rounded-full bg-ink px-8 text-sm font-bold text-paper hover:bg-[#34312C]">Create your profile</a>
+            <a href="#find-creator" className="focus-ring inline-flex min-h-14 items-center justify-center rounded-full border border-ink px-8 text-sm font-semibold text-ink hover:bg-white/50">Explore creators</a>
           </div>
         </div>
 
-        <div className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-card sm:p-8">
+        <div className="mx-auto grid aspect-square w-full max-w-[360px] place-items-center rounded-full border-2 border-ink bg-raised p-5 sm:max-w-[390px]">
+          <div className="grid h-full w-full place-items-center rounded-full border border-[#E7E0D2] p-5">
+            <div className="relative grid h-full w-full place-items-center rounded-full border border-teal">
+              <BrandMark className="h-36 w-36" ink="#141210" />
+              <span className="absolute bottom-8 bg-raised px-3 font-mono text-[10px] uppercase tracking-widest text-muted">A place in the story</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-3 border-y border-black/10 px-5 py-5 text-sm text-[#4C473F] sm:grid-cols-3 sm:px-8">
+        <span>80% to the creator</span>
+        <span><span className="mr-3 text-gold">●</span>20% shared with badge holders</span>
+        <span><span className="mr-3 text-gold">●</span>100 badges maximum</span>
+      </div>
+
+      <section id="creator-studio" className="scroll-mt-8 px-5 py-20 sm:px-8">
+        <div className="mx-auto max-w-3xl">
+        <p className="font-mono text-xs uppercase tracking-[.18em] text-teal">Creator studio</p>
+        <h2 className="mt-3 font-serif text-4xl font-normal sm:text-5xl">Launch your profile.</h2>
+        <p className="mt-4 max-w-2xl text-sm leading-6 text-muted">Create your onchain home and give your earliest supporters a permanent place in the story.</p>
+        <div className="relative mt-8 border border-black/10 bg-raised p-6 shadow-card sm:p-8">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[.18em] text-muted">Creator studio</p>
-              <h2 className="mt-2 text-2xl font-black tracking-tight">Launch your profile</h2>
+              <p className="text-xs font-semibold uppercase tracking-[.18em] text-muted">One profile per wallet</p>
+              <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight">Your creator profile</h3>
             </div>
-            <span className="rounded-full bg-[#f0f3e7] px-3 py-1.5 font-mono text-xs text-[#566912]">01 / 100</span>
+            <div className="flex items-center gap-3">
+              <img src="/brand/symbol-seal-color.svg" alt="" className="h-12 w-12" />
+              <span className="rounded-full bg-teal-soft px-3 py-1.5 font-mono text-xs text-teal">100 MAX</span>
+            </div>
           </div>
 
           {!isConnected ? (
@@ -142,13 +156,13 @@ export function FactoryDashboard() {
           ) : alreadyHasProfile ? (
             <div className="mt-8 rounded-2xl bg-paper p-5">
               <p className="text-sm text-muted">Your profile is ready</p>
-              <Link className="mt-3 inline-flex items-center gap-2 font-mono text-sm font-bold underline decoration-[#9dbd20] decoration-2 underline-offset-4" href={`/${profileAddress}`}>
+              <Link className="mt-3 inline-flex items-center gap-2 font-mono text-sm font-bold underline decoration-gold decoration-2 underline-offset-4" href={`/${profileAddress}`}>
                 {shortAddress(profileAddress!)} <span aria-hidden="true">↗</span>
               </Link>
               <p className="mt-3 text-xs text-muted">Open it to claim badges, tip, or manage revenue.</p>
             </div>
           ) : (
-            <div className="mt-7 space-y-4">
+          <div className="mt-7 space-y-4">
               <label className="block text-sm font-bold">Display name
                 <input className="focus-ring mt-2 w-full rounded-xl border border-black/15 bg-[#fbfaf7] px-4 py-3 font-normal" value={name} onChange={(event) => setName(event.target.value)} placeholder="The name people know you by" maxLength={60} />
               </label>
@@ -174,13 +188,28 @@ export function FactoryDashboard() {
 
           {!configured && <p className="mt-4 rounded-xl bg-amber-50 p-3 text-xs leading-5 text-amber-900">Factory contract is not configured yet. Compile and deploy the factory, then set <code>NEXT_PUBLIC_FACTORY_ADDRESS</code>.</p>}
           {writeError && <p role="alert" className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-800">{writeError.message}</p>}
-          {statusMessage && <p aria-live="polite" className="mt-4 rounded-xl bg-[#f0f3e7] p-3 text-sm leading-5 text-[#465516]">{statusMessage}</p>}
+          {statusMessage && <p aria-live="polite" className="mt-4 rounded-xl bg-teal-soft p-3 text-sm leading-5 text-teal">{statusMessage}</p>}
           {profileRead.error && <p className="mt-3 text-xs text-red-700">Could not read the factory. Check the RPC and factory address.</p>}
+        </div>
+        </div>
+      </section>
+
+      <section id="find-creator" className="mx-auto grid max-w-7xl gap-4 border-t border-black/10 px-5 py-12 sm:px-8 md:grid-cols-[1fr_1.2fr] md:items-center">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[.18em] text-muted">Already have a creator profile?</p>
+          <p className="mt-2 font-serif text-2xl">Go straight to their page.</p>
+        </div>
+        <div>
+          <div className="flex gap-2">
+            <input className="focus-ring min-w-0 flex-1 border border-black/15 bg-raised px-4 py-3 text-sm" value={lookup} onChange={(event) => setLookup(event.target.value)} placeholder="Paste a profile address" aria-label="Profile address" />
+            <button onClick={openLookup} className="focus-ring bg-ink px-6 py-3 text-sm font-bold text-white hover:bg-[#34362f]">Open</button>
+          </div>
+          {lookupError && <p className="mt-2 text-sm text-red-700">{lookupError}</p>}
         </div>
       </section>
       <footer className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 border-t border-black/10 px-5 py-6 text-xs text-muted sm:px-8">
         <span>FirstIn · Monad Testnet · MON</span>
-        <span>Early belief, shared upside.</span>
+        <span>Proof of discovery, on Monad.</span>
       </footer>
     </main>
   );
