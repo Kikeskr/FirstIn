@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { isAddress } from "viem";
+import { useAccount, usePublicClient, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { getAddress, isAddress } from "viem";
 import { FACTORY_ADDRESS, factoryAbi } from "@/lib/contracts";
+import { monadTestnet } from "@/lib/monad";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BrandMark } from "@/components/BrandMark";
 
@@ -23,7 +24,9 @@ export function FactoryDashboard() {
   const [statusMessage, setStatusMessage] = useState("");
   const [lookup, setLookup] = useState("");
   const [lookupError, setLookupError] = useState("");
+  const [lookupLoading, setLookupLoading] = useState(false);
   const configured = Boolean(FACTORY_ADDRESS && isAddress(FACTORY_ADDRESS));
+  const publicClient = usePublicClient({ chainId: monadTestnet.id });
 
   const profileRead = useReadContract({
     address: FACTORY_ADDRESS,
@@ -90,14 +93,34 @@ export function FactoryDashboard() {
     writeContract({ address: FACTORY_ADDRESS!, abi: factoryAbi, functionName: "createProfile", args: [metadataUri] });
   }
 
-  function openLookup() {
+  async function openLookup() {
     setLookupError("");
     const value = lookup.trim();
     if (!isAddress(value)) {
-      setLookupError("Enter a valid EVM profile address.");
+      setLookupError("Enter a creator wallet or profile address.");
       return;
     }
-    window.location.href = `/${value}`;
+
+    const inputAddress = getAddress(value);
+    if (!configured || !FACTORY_ADDRESS || !publicClient) {
+      window.location.href = `/${inputAddress}`;
+      return;
+    }
+
+    setLookupLoading(true);
+    try {
+      const profileForCreator = await publicClient.readContract({
+        address: FACTORY_ADDRESS,
+        abi: factoryAbi,
+        functionName: "creatorToProfile",
+        args: [inputAddress],
+      });
+      const isZeroAddress = profileForCreator === "0x0000000000000000000000000000000000000000";
+      window.location.href = `/${isZeroAddress ? inputAddress : profileForCreator}`;
+    } catch {
+      setLookupError("Could not look up that address on Monad Testnet. Please try again.");
+      setLookupLoading(false);
+    }
   }
 
   return (
@@ -201,8 +224,8 @@ export function FactoryDashboard() {
         </div>
         <div>
           <div className="flex gap-2">
-            <input className="focus-ring min-w-0 flex-1 border border-black/15 bg-raised px-4 py-3 text-sm" value={lookup} onChange={(event) => setLookup(event.target.value)} placeholder="Paste a profile address" aria-label="Profile address" />
-            <button onClick={openLookup} className="focus-ring bg-ink px-6 py-3 text-sm font-bold text-white hover:bg-[#34362f]">Open</button>
+            <input className="focus-ring min-w-0 flex-1 border border-black/15 bg-raised px-4 py-3 text-sm" value={lookup} onChange={(event) => setLookup(event.target.value)} placeholder="Creator wallet or profile address" aria-label="Creator wallet or profile address" />
+            <button disabled={lookupLoading} onClick={openLookup} className="focus-ring bg-ink px-6 py-3 text-sm font-bold text-white hover:bg-[#34362f] disabled:cursor-wait disabled:opacity-60">{lookupLoading ? "Opening…" : "Open"}</button>
           </div>
           {lookupError && <p className="mt-2 text-sm text-red-700">{lookupError}</p>}
         </div>
